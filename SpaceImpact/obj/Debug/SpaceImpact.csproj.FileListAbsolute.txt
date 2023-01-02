@@ -1,0 +1,8 @@
+C:\Users\nasib\Desktop\Projects\SpaceImpact\SpaceImpact\bin\Debug\SpaceImpact.exe.config
+C:\Users\nasib\Desktop\Projects\SpaceImpact\SpaceImpact\bin\Debug\SpaceImpact.exe
+C:\Users\nasib\Desktop\Projects\SpaceImpact\SpaceImpact\bin\Debug\SpaceImpact.pdb
+C:\Users\nasib\Desktop\Projects\SpaceImpact\SpaceImpact\obj\Debug\SpaceImpact.csproj.AssemblyReference.cache
+C:\Users\nasib\Desktop\Projects\SpaceImpact\SpaceImpact\obj\Debug\SpaceImpact.csproj.SuggestedBindingRedirects.cache
+C:\Users\nasib\Desktop\Projects\SpaceImpact\SpaceImpact\obj\Debug\SpaceImpact.csproj.CoreCompileInputs.cache
+C:\Users\nasib\Desktop\Projects\SpaceImpact\SpaceImpact\obj\Debug\SpaceImpact.exe
+C:\Users\nasib\Desktop\Projects\SpaceImpact\SpaceImpact\obj\Debug\SpaceImpact.pdb
