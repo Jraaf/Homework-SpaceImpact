@@ -14,8 +14,8 @@ namespace SpaceImpact
     internal class Game
     {
         //start position pf our ship
-        int x = 10;
-        int y = 10;
+        static int x = 10;
+        static int y = 10;
         static Random random = new Random();
         //maximum number of enemies on screen
         static int MaxEnemyCount = 7;
@@ -33,14 +33,14 @@ namespace SpaceImpact
             "        "};
 
         static string[] Enemy ={
-            "  /│ ",
-            "<══╡ ",
-            " \\│ "};
+            "  <═╗   ",
+            "(═══╬─┤ ",
+            "  <═╝   "};
 
         static string[] ClearEnemy ={
-            "     ",
-            "     ",
-            "     "};
+            "       ",
+            "       ",
+            "       "};
         static string[] Bullet = {
             " =>" };
 
@@ -66,21 +66,9 @@ namespace SpaceImpact
             {
                 Action();
             }
-            Console.ReadLine();
-        }
-
-        void DrawEnemy(int x, int y)
-        {
-            Console.SetCursorPosition(x, y);
-            foreach (var line in Enemy)
-            {
-                Console.Write(line);
-                Console.SetCursorPosition(x, ++y);
-            }
         }
         static void DrawModel(int x, int y, string[] Model)
-        {
-            
+        {            
             Console.SetCursorPosition(x, y);
             foreach (var line in Model)
             {
@@ -117,60 +105,17 @@ namespace SpaceImpact
                     break;
             }
         }
-        //public Thread Shooter = new Thread(() => Shoot());
         void SetWindowSettings()
         {
             Console.CursorVisible = false;
             Console.SetWindowSize(100, 25);
             Console.SetBufferSize(100, 25);
         }
-
         void Shoot(int x, int y)
         {
             BulletCoords.Add(new int[]{ x + 6, y + 1 });
-            
-            /*
-            x += 6;
-            y += 2;
-            for (; x < Console.BufferWidth - 8; x++)
-            {
-                Console.SetCursorPosition(x, y);
-                Console.Write(" ═>");
-                Thread.Sleep(25);
-                //Console.SetCursorPosition(x, y);
-                //Console.Write("     ");
-            }*/
         }
-        //Thread EnemyManager = new Thread(() => { 
-        void SpawnAndMoveEnemy()
-        {
-            int EnemyCount = random.Next(0, MaxEnemyCount);
-            List<int[]> EnemyCoords = new List<int[]>();
-            int dst = 0;
-            for (int i = 0; i < EnemyCount; i++)
-            {
-                int[] enemyCoord =
-                {
-                    Console.BufferWidth-5,
-                    random.Next(1,Console.BufferHeight-6)
-                };
-                EnemyCoords.Add(enemyCoord);
-                dst = Math.Max(dst, enemyCoord[0]);
-            }
-            for (int i = 0; i < dst; i++)
-            {
-                foreach (var coord in EnemyCoords)
-                {
-                    try
-                    {
-                        DrawModel(coord[0]--, coord[1], Enemy);
-                    }
-                    catch (Exception) { }
-                }
-                Thread.Sleep(50);
-            }
-        }
-        //});
+
         Thread BattleThread=new Thread(() =>
         {
             while (true)
@@ -184,6 +129,7 @@ namespace SpaceImpact
             MoveBullets();
             MoveEnenemies();
             HitCheck();
+            LooseCheck();
         }
         static void MoveBullets()
         {
@@ -219,6 +165,7 @@ namespace SpaceImpact
                     EnemyCoords[i][0]--;
                     if (EnemyCoords[i][0] < 0)
                     {
+                        DrawModel(EnemyCoords[i][0]+1, EnemyCoords[i][1], ClearEnemy);
                         throw new ArgumentOutOfRangeException();
                     }
                     DrawModel(EnemyCoords[i][0], EnemyCoords[i][1], Enemy);
@@ -236,13 +183,13 @@ namespace SpaceImpact
         static void HitCheck()
         {
             List<int> BulletsThatHit = new List<int>();
-            List<int> DestroyedEnemies=new List<int>();
+            List<int> DestroyedEnemies = new List<int>();
 
             for (int i = 0; i < EnemyCoords.Count; i++)
             {
                 for (int j = 0; j < BulletCoords.Count; j++)
                 {
-                    if (EnemyCoords[i][1]     == BulletCoords[j][1] ||
+                    if (EnemyCoords[i][1] == BulletCoords[j][1] ||
                         EnemyCoords[i][1] + 1 == BulletCoords[j][1] ||
                         EnemyCoords[i][1] + 2 == BulletCoords[j][1])
                     {
@@ -257,8 +204,12 @@ namespace SpaceImpact
                 }
             }
             foreach (var BulletNumber in BulletsThatHit)
-            {                
-                BulletCoords.RemoveAt(BulletNumber);
+            {
+                try
+                {
+                    BulletCoords.RemoveAt(BulletNumber);
+                }
+                catch (ArgumentOutOfRangeException) { };
             }
             foreach (var EnemyNumber in DestroyedEnemies)
             {
@@ -267,6 +218,25 @@ namespace SpaceImpact
                     Console.BufferWidth - 5,
                     random.Next(1, Console.BufferHeight - 6)
                 };
+            }
+        }
+        static void LooseCheck()
+        {
+            foreach (var EnemyCoord in EnemyCoords)
+            {
+                if (x == EnemyCoord[0])
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (y + 1+i == EnemyCoord[1]     ||
+                            y + 1+i == EnemyCoord[1] + 1 ||
+                            y + 1+i == EnemyCoord[1] + 2 )
+                        {
+                            Environment.Exit(0);
+                        }
+                    }
+
+                }
             }
         }
     }
