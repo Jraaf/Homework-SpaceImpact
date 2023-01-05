@@ -56,7 +56,7 @@ namespace SpaceImpact
                 EnemyCoords.Add(new int[]
                     {
                         Console.BufferWidth - 5,
-                        random.Next(1, Console.BufferHeight - 6)
+                       3* random.Next(1, (Console.BufferHeight - 6)/3)
                     });
             }
             SetWindowSettings();
@@ -97,10 +97,7 @@ namespace SpaceImpact
                     DrawModel(++x, y, Ship);
                     break;
                 case ConsoleKey.Enter:
-                    var shooting = Task.Factory.StartNew(() =>
-                    {
-                        Shoot(x, y+1);
-                    });
+                    Shoot(x, y + 1);
                     //Task.WaitAll(shooting);
                     break;
             }
@@ -175,7 +172,7 @@ namespace SpaceImpact
                     EnemyCoords[i] = new int[]
                     {
                         Console.BufferWidth - 5,
-                        random.Next(1, Console.BufferHeight - 6)
+                       3* random.Next(1, (Console.BufferHeight - 6)/3)
                     };
                 }
             }
@@ -193,7 +190,9 @@ namespace SpaceImpact
                         EnemyCoords[i][1] + 1 == BulletCoords[j][1] ||
                         EnemyCoords[i][1] + 2 == BulletCoords[j][1])
                     {
-                        if (EnemyCoords[i][0] - 4 == BulletCoords[j][0] + 3)
+                        if (EnemyCoords[i][0]  == BulletCoords[j][0] + 3||
+                            EnemyCoords[i][0]  == BulletCoords[j][0] + 2||
+                            EnemyCoords[i][0]  == BulletCoords[j][0] + 1)
                         {
                             BulletsThatHit.Add(j);
                             DestroyedEnemies.Add(i);
@@ -235,7 +234,6 @@ namespace SpaceImpact
                             Environment.Exit(0);
                         }
                     }
-
                 }
             }
         }
